@@ -1,20 +1,13 @@
-score<-c(182,168,184,190,170,174)
-range(score)
-Range = max(score) - min(score)
-Range
+#Chapter 5: Visualization
+#Installation Package
+library('ggplot2')
 
-setnum <-c(1,2,2,3,4,2,1,4,5)
-
-getmode <- function(v){
-  uniquev <- unique(v)
-  uniquev[which.max(tabulate(match(v,uniquev)))]
-}
-getmode(setnum)
-
-mean(faithful$waiting)
+# Prepare Data
+dat <- iris
 View(faithful)
-
 View(dat)
+
+# Histogram ------------------------------------------------------
 hist(dat$Sepal.Length,
      main = "Histogram of Sepal Length",xlab = "length")
 levels(dat$Species)
@@ -22,7 +15,7 @@ levels(dat$Species)
 abline(v=mean(dat$Sepal.Length),lwd=2,col=2)
 legend("topright",legend = "Mean",col="red",lwd=2)
 
-
+# Histogram ------------------------------------------------------
 plot(dat$Petal.Length,dat$Petal.Width,main="Plot between petal length and petal width",
      xlab = "Petal Length (mm)",
      ylab = "Petal Width (mm)",pch=6,col = 1:3)
