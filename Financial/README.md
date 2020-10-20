@@ -25,4 +25,5 @@ Time-Series [1:84] from 1960 to 1981:0.71 0.63 0.85 0.44 0.61 0.69 0.92 0.55 0.7
 ````
 plot(jj, type="o", ylab="Quarterly Earnings per Share")
 ````
-Plot:
+<img src="https://github.com/safesit23/R-language/blob/master/Financial/plots/01_plot(jj).png" width="300" title="plot">
+Non stationary because it is trends, season, variance
