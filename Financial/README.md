@@ -11,8 +11,18 @@ install.packages("zoo")
 install.packages("xts")
 install.packages("quantmod")
 ````
-## Topics
+## Outlines
 - Introduction to Time Series Analysis
 - Data Wrangling
 - Trend Analysis (Linear Model)
 - Autogressive Moving Average Model (ARMA)
+
+### Time Series Analysis
+````
+> str(jj)
+Time-Series [1:84] from 1960 to 1981:0.71 0.63 0.85 0.44 0.61 0.69 0.92 0.55 0.72 0.77 ...
+````
+````
+plot(jj, type="o", ylab="Quarterly Earnings per Share")
+````
+Plot:
