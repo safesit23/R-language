@@ -10,7 +10,7 @@ tail(AAPL)
 str(AAPL)
 #Data: num [1:3477, 1:6] # has 3477 days
 
-#------------
+# PART 1 PREDICT -----------------------------------------------
 #Step1: set data into array format without date
 A=coredata(AAPL[,"AAPL.Adjusted"]) ##used AAPL.Adjusted and not has time series, it use only index instead time
 #Explain: linear model to use index 1,2,3 is simple more than using time
@@ -34,11 +34,12 @@ p.ts = ts(p,start = 1)
 A.ts = ts(A.hist,start = 1)
 ts.plot(A.ts, p.ts, lty=c(1,2), col=c('black','red'))
 
-#Step 5: Detrend by using difference
+# PART 2: AR ---------------------------------------------------------
+#Step 1: Detrend by using difference
 dd=diff(A.ts)
 plot(dd)
 
-#Step 6: Autoregression
+#Step 2: Autoregression
 library(fpp2)
 fo=ar(dd)
 pr=forecast(fo,h=8) #forecast 8 period, it will return object
@@ -51,3 +52,16 @@ for (x in 2:length(bb1)) {
 
 bb1=ts(bb1, start = 100)
 ts.plot(A.ts,bb1, col=c('black','red'))
+
+# PART 3: AR ------------------------------------------------
+#Decompose
+AAPL.decompose = decompose(ts(AAPL[,4],frequency = 365))
+plot(AAPL.decompose)
+#Plot
+plot(AAPL[,4]) #basic
+ts.plot(diff(AAPL[,4])) #Plot diff but it remain non constrant variance
+ts.plot(log(AAPL[,4])) # Plot log --> It remain trends
+ts.plot(diff(log(AAPL[,4]))) # Diff and log --> stationary
+
+
+
