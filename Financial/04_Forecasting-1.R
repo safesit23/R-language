@@ -1,29 +1,32 @@
-# Forecasting Part1
+# Forecasting:AR (Autoregression) ------------------------------------
 
-## AR (Autoregression) ------------------------------------
-#1 Detrend by Differencing
-sh = read.csv("shampoo.csv")
-plot(sh$Sales, type = "l", col="red")
-val = sh$Sales
-diff=c(NA,val[2:length(val)]- val[1:(length(val)-1)])
-head(diff)
-#[1]     NA -120.1   37.2  -63.8   61.0  -11.8 #the 1st instance become void.
-new = data.frame(sh$Month[2:length(diff)],diff[2:length(diff)])
-str(new) ; str(sh) # compare the size of the new and old dataframe.
-colnames(new) = c('Month', 'Sales')
-plot(sh$Sales, type = "l", col="red", ylim=c(-200,700))
-lines(new$Sales)
+# Prepare data
+sh = read.csv("https://raw.githubusercontent.com/safesit23/R-language/master/SampleData/shampoo.csv")
+head(sh)
 
-#2 Detrend by Subtracting Trend Lines
-ind = 1:length(sh$Sales) # to construct time stamps
-Sale=sh$Sales
-t1 = lm(Sale ~ ind)
-forcast = predict(t1)
-detrend = Sale - forcast
-plot(sh$Sales, type = "l", col="red", ylim=c(-200,700))
+# Decompose
+sh.decompose = decompose(ts(sh$Sales,frequency = 12)) #freq season in 1 year
+plot(sh.decompose)
+# Conclusion: it has trends
+
+#1 Detrend by Differencing ----------------
+sh.diff = diff(sh$Sales)
+plot(sh$Sales,type = "l", col="red", ylim = c(-200,700)) #original data
+lines(sh.diff) #add black line of sh.diff
+
+#2 Detrend by subtracting prediction ----------------
+ind = 1:length(sh$Sales) #make array start 1 to length of sh$Sales
+Sale = sh$Sales
+t1 = lm(Sale ~ ind) #linear regression
+predic = predict(t1)
+plot(predic)
+detrend = Sale - predic # Original - Predict
+#Explain: when we subtract with trending, new data will no trends
+plot(Sale,type = "l", col="red", ylim = c(-200,700))
 lines(detrend, type='l')
 
-## MA (Moving Average) ------------------------------------
+
+# MA (Moving Average) ------------------------------------
 #1
 library(fpp2) #https://otexts.com/fpp2/
 str(elecsales)
