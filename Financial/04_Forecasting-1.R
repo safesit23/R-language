@@ -27,16 +27,29 @@ lines(detrend, type='l')
 
 
 # MA (Moving Average) ------------------------------------
-#1
+#Prepare Data: Electronic Sales
 library(fpp2) #https://otexts.com/fpp2/
-str(elecsales)
+S=elecsales
+str(S) # Data is Time-Series
+periodicity(S) # Yearly periodicity from 1989-01-01 to 2008-01-01 
+
+#Plot all data
 autoplot(elecsales) + xlab("Year") + ylab("GWh") + ggtitle("Annual electricity sales: South Australia")
-S=elecsales #
+
+#Plot with MA
 a = ma(S, 5) #For m=5, k=2, e.g. S(t=3) = (sum(S[1:5])/5) = 2381.53 which is the moving average for S3
--------
-#Manual calculation
-a=c(NA,NA,rep(0,16), NA,NA)
-for (i in 1:(length(S)-4)) {a[i+2]=sum(S[i:(i+4)])/5}
-#------
+#or using Manual calculation
+#a=c(NA,NA,rep(0,16), NA,NA)
+#for (i in 1:(length(S)-4)) {a[i+2]=sum(S[i:(i+4)])/5}
 b=ts(a,start=1989, end=2008)
 ts.plot(S,b, col = c('black', 'red'))
+
+par(mfrow=c(2,2))
+for (m in c(3,5,7,9)) {
+  a = ma(S,m)
+  b = ts(a,start=1989,end=2008)
+  ts.plot(S,b,col=c('black', 'red'),
+          main=paste("MA of ",m,"period averaging"))
+}
+
+
