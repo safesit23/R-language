@@ -28,6 +28,7 @@ lines(detrend, type='l')
 
 # MA (Moving Average) ------------------------------------
 #Prepare Data: Electronic Sales
+library(quantmod)
 library(fpp2) #https://otexts.com/fpp2/
 S=elecsales
 str(S) # Data is Time-Series
