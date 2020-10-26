@@ -48,6 +48,7 @@ library(forecast)
 fit=arima(detP,c(0,1,1))
 summary(fit)
 tsdisplay(fit$residuals)
+Box.test(fit$residuals,lag=20,type='Ljung-Box')
 
 nrow(detP) #all data
 split = nrow(detP)-30 #split data
@@ -57,10 +58,10 @@ time(detP[split])
 realreturn = xts(0,as.Date("2020-03-27" ,"%Y-%m-%d")) #point between trends and test
 f.return = data.frame(Forecasted=numeric())
 
-
+#
 for(s in split:(nrow(detP)-1)){
   pr_train = detP[1:s,] #from start 1 to split s
-  pr_test = detP[(s+1):nrow(detP),] #from >1167 to last data
+  pr_test = detP[(s+1):nrow(detP),] #from >172 to last data
   
   fit = arima(pr_train, order=c(1,1,1))
   arima.f = forecast(fit,h=1) #1 period
@@ -78,6 +79,9 @@ realreturn = realreturn[-1]
 f.return = xts(f.return, index(realreturn))
 plot(realreturn,type='l',main="Actual returns (black) vs Forecasted return(red)")
 lines(f.return, lwd=2, col='red')
+
+
+#plot predict on all data of price
 f.pr = exp(f.return) #expo for take log
 head(f.pr)
 plot(price)
@@ -89,4 +93,19 @@ acc = (real_pr - f.pr)/real_pr*100
 acc #display error in back test
 
 report = cbind(real_pr,f.pr, acc)
-colnames(report) = c("AMZN.Real","AMZN.Forecasted","Percent_Error")
+colnames(report) = c("AU.Real","AU.Forecasted","Percent_Error")
+
+library(MLmetrics)
+error = MSE(f.pr, real_pr)
+tot_error = sum((real_pr-f.pr)^2) #total error
+mse.m = tot_error/nrow(f.pr)
+mse.m
+
+# 7.) MA ------------------------------------
+p_ts <- ts(price)
+p_ma <- arima(priceAU, order = c(0, 1, 1)) #fit
+residuals <- residuals(p_ma)
+str(p_ts)
+p_fitted <- p_ts - residuals
+ts.plot(p_ts)
+points(p_fitted, type = "l", col = 2, lty = 1)
