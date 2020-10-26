@@ -1,3 +1,4 @@
+library(magrittr)
 library(quantmod)
 #Amazon.com, Inc. (AMZN) 
 
