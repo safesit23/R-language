@@ -71,7 +71,8 @@ realreturn = realreturn[-1]
 f.return = xts(f.return, index(realreturn))
 plot(realreturn,type='l',main="Actual returns (black) vs Forecasted return(red)")
 lines(f.return, lwd=2, col='red')
-# or 
+
+# or plot predict on all data of price
 f.pr = exp(f.return) #expo for take log
 head(f.pr)
 plot(price)
